@@ -1,235 +1,225 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fabricaudea_frontend&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fabricaudea_frontend)
+# FleetGuard360 - Sistema de Gestión de Flotas
 
-# FleetGuard360
+Sistema integral para la gestión y monitoreo de flotas vehiculares desarrollado con Next.js 14, TypeScript, TailwindCSS y shadcn/ui.
 
-FleetGuard360 es una plataforma de gestión de flota desarrollada como parte de la Fábrica Escuela. Sistema completo de monitoreo y administración de vehículos con control de acceso basado en roles (RBAC), diseñado para ser escalable, accesible y mantenible.
+## 🚀 Características
 
-## 🚀 Características Principales
-
-- **🔐 Autenticación por roles**: Sistema RBAC con Administrador y Operador
-- **🚛 Gestión de vehículos**: CRUD completo con validaciones y estados
-- **📊 Panel de alertas**: Monitoreo en tiempo real de eventos de la flota
-- **📈 Reportes**: Análisis y métricas para toma de decisiones
-- **⚙️ Configuración**: Panel de administración del sistema
-- **📱 Responsive**: Diseño adaptativo para móvil, tablet y escritorio
-- **♿ Accesibilidad**: Cumple estándares WCAG 2.1 AA
-
-## 🏗️ Arquitectura del Código
-
-### Estructura de Directorios
-```
-src/
-├── components/           # Componentes reutilizables
-│   ├── ui/              # Componentes base de shadcn/ui
-│   ├── Navigation.tsx   # Sidebar y navegación principal
-│   ├── VehicleTable.tsx # Tabla de vehículos con CRUD
-│   ├── VehicleForm.tsx  # Formulario modal para crear/editar
-│   ├── ConfirmDialog.tsx# Diálogo de confirmación
-│   └── ProtectedRoute.tsx# Protección de rutas por rol
-├── contexts/            # Estado global con Context API
-│   ├── AuthContext.tsx  # Autenticación y manejo de usuario
-│   └── VehicleContext.tsx# Estado de vehículos y operaciones
-├── pages/               # Páginas principales de la aplicación
-│   ├── Login.tsx        # Pantalla de autenticación
-│   ├── Fleet.tsx        # Gestión de flota (wrapper)
-│   ├── Alerts.tsx       # Panel de alertas
-│   ├── Reports.tsx      # Dashboard de reportes
-│   ├── Settings.tsx     # Configuración del sistema
-│   └── Forbidden.tsx    # Página 403 para acceso denegado
-├── types/               # Definiciones de TypeScript
-│   └── vehicle.ts       # Interfaces y tipos para vehículos
-├── lib/                 # Utilidades y configuraciones
-│   └── utils.ts         # Funciones helper y utilidades
-└── hooks/               # Custom hooks reutilizables
-    └── use-mobile.tsx   # Hook para detección de dispositivos móviles
-```
-
-### Patrones de Diseño Implementados
-
-#### 1. **Context Pattern** - Gestión de Estado Global
-```typescript
-// AuthContext: Manejo centralizado de autenticación
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// VehicleContext: Estado de vehículos con operaciones CRUD
-const VehicleContext = createContext<VehicleContextType | undefined>(undefined);
-```
-
-#### 2. **RBAC (Role-Based Access Control)**
-```typescript
-// Protección de rutas basada en roles
-<ProtectedRoute allowedRoles={['administrador']}>
-  <Reports />
-</ProtectedRoute>
-
-// UI condicional según permisos
-{canManageVehicles && <Button>Crear vehículo</Button>}
-```
-
-#### 3. **Compound Component Pattern**
-```typescript
-// Formularios modales reutilizables
-<VehicleForm mode="create" onSubmit={createVehicle} />
-<VehicleForm mode="edit" vehicle={selected} onSubmit={updateVehicle} />
-```
-
-#### 4. **Custom Hooks Pattern**
-```typescript
-// Hooks para lógica reutilizable
-const { user, login, logout } = useAuth();
-const { vehicles, isLoading, createVehicle } = useVehicles();
-```
-
-## 👥 Roles de Usuario y Control de Acceso
-
-### 🔧 Administrador
-- **Rutas completas**: `/fleet`, `/alerts`, `/reports`, `/settings`
-- **Permisos**: Crear, editar, eliminar vehículos
-- **Dashboard**: Acceso completo a métricas y configuración
-- **Redirección**: Automática a `/fleet` después del login
-
-### 👤 Operador
-- **Rutas limitadas**: `/alerts`, `/fleet` (solo lectura)
-- **Permisos**: Solo visualización de datos
-- **Restricciones**: Botones deshabilitados con tooltips informativos
-- **Redirección**: Automática a `/alerts` después del login
-
-## 🔐 Credenciales de Prueba
-
-### Administrador
-- **Usuario**: `admin`
-- **Contraseña**: `admin123`
-
-### Operador
-- **Usuario**: `operador`
-- **Contraseña**: `op123`
+- **Autenticación por roles**: Sistema de login con roles diferenciados (admin/operator)
+- **Gestión de vehículos**: CRUD completo con validaciones (Alta, Edición, Baja)
+- **Interfaz responsive**: Diseño adaptativo mobile-first
+- **Accesibilidad AA**: Cumple estándares de accesibilidad web
+- **UI moderna**: Tema oscuro con componentes shadcn/ui
+- **Preparado para API**: Servicios mock fáciles de conectar a API real
 
 ## 🛠️ Stack Tecnológico
 
-### Frontend Core
-- **React 18.3+**: Framework principal con hooks y context
-- **TypeScript**: Tipado estático para mayor robustez
-- **Vite**: Build tool moderno para desarrollo rápido
-- **React Router v6**: Navegación con protección de rutas
+- **Framework**: Next.js 14 (App Router)
+- **Lenguaje**: TypeScript
+- **Estilos**: TailwindCSS + tailwindcss-animate
+- **Componentes**: shadcn/ui (Radix UI)
+- **Íconos**: Lucide React
+- **Formularios**: React Hook Form + Zod
+- **Notificaciones**: Sonner (integrado con shadcn/ui)
 
-### UI y Styling
-- **TailwindCSS**: Framework CSS utility-first
-- **shadcn/ui**: Componentes accesibles y customizables
-- **Lucide React**: Iconografía moderna y consistente
-- **CSS Variables**: Sistema de tokens para theming
+## 🏗️ Estructura del Proyecto
 
-### Herramientas de Desarrollo
-- **ESLint**: Linting y mejores prácticas
-- **TypeScript Compiler**: Verificación de tipos
-- **PostCSS**: Procesamiento de CSS
+```
+/app
+  /(auth)/login/          # Página de login
+  /fleet/                 # Gestión de flota (CRUD)
+  /alerts/                # Dashboard de alertas
+  /(errors)/forbidden/    # Página 403
+  /layout.tsx
+  /page.tsx
+  /globals.css
 
-## 🎨 Sistema de Diseño
+/components
+  /ui/                    # Componentes shadcn/ui
+  NavBar.tsx              # Barra de navegación
+  SideBar.tsx             # Menú lateral
+  VehicleTable.tsx        # Tabla de vehículos
+  VehicleForm.tsx         # Formulario CRUD
+  ConfirmDialog.tsx       # Modal de confirmación
+  RoleGuard.tsx           # Control de permisos
+  EmptyState.tsx          # Estados vacíos
 
-### Tema Oscuro Professional
-```css
-/* Paleta de colores principal */
---primary: 214 84% 56%;        /* Azul corporativo */
---success: 142 76% 46%;        /* Verde para acciones positivas */
---destructive: 0 84% 60%;      /* Rojo para acciones destructivas */
---background: 220 13% 9%;      /* Fondo oscuro principal */
---card: 220 13% 12%;           /* Fondo de tarjetas */
+/lib
+  /api/
+    http.ts               # Helper para fetch
+    vehicles.ts           # Servicios de vehículos (mock)
+    auth.ts               # Servicios de autenticación
+  /auth/
+    context.tsx           # Contexto de autenticación
+  /models/
+    vehicle.ts            # Tipos TypeScript
+  utils.ts                # Utilidades generales
 ```
 
-### Responsive Breakpoints
-- **Mobile**: `< 768px` - Sidebar colapsable, botones touch-friendly
-- **Tablet**: `768px - 1024px` - Layout híbrido
-- **Desktop**: `> 1024px` - Sidebar completo, múltiples columnas
+## 🚦 Cómo ejecutar
 
-## 🔄 Flujos de Usuario
+### Requisitos
+- Node.js 18+ 
+- npm, yarn, pnpm o bun
 
-### Flujo de Autenticación
-1. **Login** → Validación → Redirección según rol
-2. **Administrador** → `/fleet` (gestión completa)
-3. **Operador** → `/alerts` (monitoreo)
-4. **Protección**: Rutas restringidas → 403 Forbidden
+### Instalación
 
-### Flujo CRUD de Vehículos
-1. **Crear**: Modal → Validación → API call → Toast → Actualizar tabla
-2. **Editar**: Selección → Modal precargado → Validación → Guardar
-3. **Eliminar**: Confirmación → Verificar restricciones → Eliminar → Toast
+1. **Clona el repositorio** (o usa los archivos proporcionados)
+2. **Instala dependencias**:
+   ```bash
+   npm install
+   ```
 
-## 📱 Características Responsive
+3. **Ejecuta el servidor de desarrollo**:
+   ```bash
+   npm run dev
+   ```
 
-### Mobile-First Design
-- **Sidebar**: Colapsable con hamburger menu
-- **Tablas**: Scroll horizontal con indicadores visuales
-- **Formularios**: Campos apilados verticalmente
-- **Botones**: Mínimo 44x44px para touch
+4. **Abre tu navegador** en [http://localhost:3000](http://localhost:3000)
 
-### Optimizaciones Touch
-- **Tooltips**: Adaptados para dispositivos táctiles
-- **Modales**: Full-screen en móvil
-- **Navegación**: Gestos swipe compatibles
+### Scripts disponibles
 
-## ♿ Accesibilidad (WCAG 2.1 AA)
-
-### Navegación por Teclado
-- **Tab navigation**: Orden lógico en todos los elementos
-- **Focus visible**: Indicadores claros de foco
-- **Escape key**: Cierre de modales y dropdowns
-
-### Semántica HTML
-- **Labels**: Asociados correctamente con inputs
-- **Headings**: Jerarquía lógica (h1, h2, h3)
-- **ARIA**: Roles y propiedades para lectores de pantalla
-- **Live regions**: Anuncios de cambios de estado
-
-### Contraste y Legibilidad
-- **Contraste**: Mínimo 4.5:1 para texto normal
-- **Tamaños**: Texto mínimo 16px en móvil
-- **Estados**: Indicadores visuales claros para disabled/active
-
-## 🔌 Preparación para Backend
-
-### API Interface Preparada
-```typescript
-// Funciones listas para conectar con REST API
-interface VehicleService {
-  listVehicles(): Promise<Vehicle[]>;
-  createVehicle(data: VehicleFormData): Promise<Vehicle>;
-  updateVehicle(id: string, data: VehicleFormData): Promise<Vehicle>;
-  deleteVehicle(id: string): Promise<boolean>;
-}
+```bash
+npm run dev      # Servidor de desarrollo
+npm run build    # Build de producción  
+npm run start    # Servidor de producción
+npm run lint     # Linter ESLint
 ```
 
-### Mock Data Current
-- **Datos simulados** para desarrollo y testing
-- **Estados realistas** incluyendo loading, error, empty
-- **Validaciones** preparadas para casos reales
+## 👤 Credenciales de Prueba
 
-## 🚧 Roadmap y Extensibilidad
+### Administrador (acceso completo)
+- **Email**: `admin@demo.com`
+- **Contraseña**: `Admin123`
+- **Permisos**: CRUD completo de vehículos, acceso a todas las secciones
 
-### Integraciones Futuras
-- **🔗 REST API**: Conexión con backend real
-- **🔄 WebSockets**: Actualizaciones en tiempo real
-- **📊 Analytics**: Tracking de uso y métricas
-- **🔔 Notificaciones**: Push notifications para alertas
+### Operador (solo lectura)
+- **Email**: `operador@demo.com`
+- **Contraseña**: `Operador123`
+- **Permisos**: Solo lectura de flota y alertas
 
-### Características Planificadas
-- **📱 PWA**: Progressive Web App capabilities
-- **🌐 i18n**: Internacionalización multi-idioma
-- **🎨 Themes**: Múltiples temas de color
-- **📦 Microservices**: Arquitectura distribuida
+## 🔐 Sistema de Roles
 
-## 🧪 Testing y Quality
+### Admin
+- ✅ Crear, editar y eliminar vehículos
+- ✅ Acceso a gestión de flota
+- ✅ Acceso a alertas
+- ✅ Navegación completa
 
-### Validaciones Implementadas
-- **Formularios**: Validación en tiempo real con feedback
-- **Duplicados**: Prevención de placas duplicadas
-- **Restricciones**: Vehículos con viajes activos no eliminables
-- **Permisos**: Verificación de roles en cada acción
+### Operator  
+- ✅ Ver lista de vehículos (solo lectura)
+- ✅ Acceso a alertas
+- ❌ No puede modificar vehículos
+- ❌ Botones deshabilitados con tooltips informativos
 
-### Estados de Error Manejados
-- **Network errors**: Manejo de fallos de conexión
-- **Validation errors**: Feedback específico por campo
-- **Permission errors**: Mensajes claros de acceso denegado
-- **Loading states**: Indicadores de progreso consistentes
+## 🌐 Variables de Entorno
+
+Crea un archivo `.env.local` (opcional):
+
+```env
+# URL base de la API (cuando conectes a backend real)
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api
+```
+
+## 📱 Funcionalidades
+
+### Gestión de Flota (/fleet)
+- **Tabla responsive** con scroll horizontal en móvil
+- **Estados de carga** (loading, empty, error)
+- **CRUD completo** para administradores
+- **Solo lectura** para operadores
+- **Validaciones** con React Hook Form + Zod
+- **Confirmación de eliminación** con modal destructivo
+
+### Alertas (/alerts)
+- **Dashboard** con métricas en tiempo real (mock)
+- **Lista de alertas** con severidades y ubicaciones
+- **Responsive** con cards adaptativas
+
+### Autenticación
+- **Login seguro** con validación de campos
+- **Redirección automática** según rol
+- **Sesión persistente** en localStorage
+- **Logout** desde sidebar
+
+## 🎨 Diseño y UX
+
+### Tema Oscuro
+- Fondo: `gray-950` (casi negro)
+- Cards: `gray-900` con bordes `gray-800`
+- Texto: Escala de grises con contraste AA (4.5:1 mínimo)
+- Primario: Azul (`blue-600`)
+- Destructivo: Rojo (`red-600`)
+
+### Responsive Design
+- **Mobile**: Sidebar como drawer, tabla con scroll horizontal
+- **Tablet**: Sidebar colapsable, layout optimizado  
+- **Desktop**: Sidebar fija, tabla completa
+
+### Accesibilidad
+- **Navegación por teclado** completa
+- **Focus visible** en todos los elementos interactivos
+- **Labels** descriptivos en formularios
+- **ARIA labels** en botones e iconos
+- **Contraste AA** cumplido en todos los elementos
+- **Tooltips informativos** en acciones deshabilitadas
+
+## 🔌 Preparado para API Real
+
+### Servicios Mock Actuales
+Los archivos en `/lib/api/` contienen implementaciones mock que simulan:
+- **Latencia de red** (400-700ms)
+- **Errores aleatorios** (10% probabilidad)
+- **Datos persistentes** durante la sesión
+
+### Migración a API Real
+Para conectar a una API real, solo necesitas:
+
+1. **Configurar la URL base**:
+   ```typescript
+   // lib/api/http.ts
+   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+   ```
+
+2. **Reemplazar implementaciones mock**:
+   ```typescript
+   // lib/api/vehicles.ts
+   export async function listVehicles(): Promise<Vehicle[]> {
+     return http<Vehicle[]>('/vehicles');
+   }
+   ```
+
+3. **Mantener la misma interfaz** - toda la UI seguirá funcionando
+
+## 🧪 Estados y Casos de Uso
+
+### Estados de la Aplicación
+- ✅ **Loading**: Skeletons en tabla y formularios
+- ✅ **Empty**: Estado vacío con CTA para crear vehículo
+- ✅ **Error**: Mensajes de error con botón de reintento
+- ✅ **Success**: Toasts de confirmación para acciones
+
+### Validaciones
+- **Placa**: Requerida, máximo 10 caracteres
+- **Modelo**: Requerido, máximo 50 caracteres  
+- **Capacidad**: Número entero, 1-999 pasajeros
+- **Estado**: Activo/Inactivo (enum)
+
+## 🚀 Siguientes Pasos
+
+Una vez conectado a una API real, podrías agregar:
+
+- **Filtros y búsqueda** en la tabla
+- **Paginación** para grandes conjuntos de datos
+- **Exportación** de reportes (PDF/Excel)
+- **Notificaciones push** para alertas críticas
+- **Mapas interactivos** para ubicación en tiempo real
+- **Dashboard analítico** con charts y métricas
+- **Gestión de usuarios** y permisos granulares
+
+## 📄 Licencia
+
+Proyecto de demostración para FleetGuard360 - Sistema de Gestión de Flotas.
 
 ---
 
-Desarrollado para la Fábrica Escuela - FleetGuard360 🚛
+**Nota**: Esta aplicación utiliza datos mock para demostración. La UI está completamente preparada para conectar con una API REST real sin cambios en la interfaz de usuario.
