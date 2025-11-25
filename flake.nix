@@ -20,9 +20,6 @@
         packages = with pkgs; [
           nodejs
         ];
-        shellHook = ''
-          export SHELL="/run/current-system/sw/bin/bash"
-        '';
       };
     };
   };
